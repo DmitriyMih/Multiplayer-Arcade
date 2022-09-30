@@ -1,29 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField, Range(1, 15f)] private float _speed = 5f;
-
-    private float _speedWithTurret = 2f;
-    private float _speedWithBoxCoef = 0.25f;
-
     [SerializeField, Range(1, 20)] private float _rotationPerFrame = 10f;
-  
-    [SerializeField] private Joystick _joystick;
-    private CharacterController _cc;
 
-    public float MoveVelocity => _cc.velocity.sqrMagnitude;
+    [SerializeField] private Joystick _joystick;
+    private CharacterController characterController;
+    public float MoveVelocity => characterController.velocity.sqrMagnitude;
     public float LayerWeight;
     public bool IsMove { get; private set; }
 
-    public float _distance = 0;
-
     private void Awake()
     {
-        _cc = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
     }
 
     private void Update()
@@ -37,11 +29,15 @@ public class PlayerMovement : MonoBehaviour
     private void Movement()
     {
         moveDir.Set(_joystick.Horizontal, 0, _joystick.Vertical);
-        float speed =  Player._player.Inventory.HasBox? _speedWithTurret : _speed;
-        
-        _cc.SimpleMove(moveDir * speed);
+        //float speed = _speed;//_player.Inventory.HasTurret ? _speedWithTurret : _speed;
+        //LayerWeight = _player.Inventory.HasTurret ? 1 : 0;
 
-        IsMove = moveDir.magnitude > 0 && _cc.isGrounded;
+        //float animationSpeed = _player.Inventory.HasTurret ? _speedWithTurret * _speedWithTurretCoef : _speed * _speedCoef;
+        //_player.PlayerAnimations.AnimationSpeed = animationSpeed;
+
+        characterController.SimpleMove(moveDir * _speed);
+
+        IsMove = moveDir.magnitude > 0 && characterController.isGrounded;
     }
 
     private void Rotate()
@@ -56,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleGravity()
     {
-        if (_cc.isGrounded)
+        if (characterController.isGrounded)
         {
             float groundedGravity = .05f;
             moveDir.y = groundedGravity;
