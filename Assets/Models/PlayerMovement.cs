@@ -8,9 +8,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1, 20)] private float _rotationPerFrame = 10f;
 
     [SerializeField] private Joystick _joystick;
+    [SerializeField] private PlayerAnimator _playerAnimator;
+
     private CharacterController characterController;
     public float MoveVelocity => characterController.velocity.sqrMagnitude;
     public float LayerWeight;
+
     public bool IsMove { get; private set; }
 
     private void Awake()
