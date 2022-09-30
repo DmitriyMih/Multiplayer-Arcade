@@ -8,8 +8,6 @@ public class PlayerAnimator : MonoBehaviour
     private Animator _animator;
     [SerializeField] private PlayerMovement _movement;
 
-    public float AnimationSpeed;
-
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -20,7 +18,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (_movement != null)
         {
-            _animator.SetFloat(nameof(_movement.MoveVelocity), _movement.MoveVelocity);
+            _animator.SetFloat("Movement", _movement.MoveVelocity);
 
             float targetLayer = _animator.GetLayerWeight(1);
             if (_movement.LayerWeight != targetLayer)

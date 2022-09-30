@@ -1138,6 +1138,7 @@ GameObject:
   - component: {fileID: 685622110}
   - component: {fileID: 685622105}
   - component: {fileID: 685622106}
+  - component: {fileID: 685622107}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1171,13 +1172,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.75
+  m_Height: 2.125
   m_Radius: 0.3
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_StepOffset: 0.5
+  m_SkinWidth: 0.001
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.875, z: 0.15}
+  m_Center: {x: 0, y: 1.0625, z: 0}
 --- !u!114 &685622106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1190,10 +1191,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80fee0ec8de24f84b96acf7062abd8e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2.5
+  _speed: 5
   _rotationPerFrame: 10
   _joystick: {fileID: 1308021805}
+  _playerAnimator: {fileID: 685622107}
   LayerWeight: 0
+--- !u!114 &685622107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685622103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d60abf70dcb46d4458dde5d9374c1d6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movement: {fileID: 685622106}
 --- !u!95 &685622110
 Animator:
   serializedVersion: 3
