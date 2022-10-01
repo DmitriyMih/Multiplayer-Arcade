@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ShakeDetector : MonoBehaviour
 {
+    [SerializeField] private PlayerMovement playerMovement;
+
     [SerializeField] private float _shakeDetectionThreshold;
     [SerializeField] private float _minShakeInterval;
 
@@ -20,6 +22,9 @@ public class ShakeDetector : MonoBehaviour
 
     private void Update()
     {
+        if (playerMovement.ButtonInteractable == true)
+            return;
+
         _sqrtShakeDetectionThreshold = Mathf.Pow(_shakeDetectionThreshold, 2);
 
         if (Input.acceleration.sqrMagnitude >= _sqrtShakeDetectionThreshold && Time.unscaledTime >= _timeSinceLastShake + _minShakeInterval)
@@ -27,6 +32,7 @@ public class ShakeDetector : MonoBehaviour
             //Shake
             Debug.Log("Shake");
             debugImage.color = Color.red;
+            playerMovement.Throw();
         }
         else
             debugImage.color = Color.green;

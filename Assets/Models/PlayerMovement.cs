@@ -55,13 +55,6 @@ public class PlayerMovement : MonoBehaviour
         Rotate();
     }
 
-    public void SwitchControl(bool isButton)
-    {
-        switch(isButton)
-        {
-
-        }
-    }
 
     private Vector3 moveDir;
     private void Movement()
@@ -144,13 +137,12 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown, float cooldown, bool isVelocity)
     {
         CharacterCooldown = throwCooldownTime;
+        interactionObject.transform.parent = null;
 
         yield return new WaitForSeconds(animationCooldown);
 
         interactionObject._rigidbody.velocity = transform.forward * throwVelocity;//(isVelocity ? throwVelocity : dropVelocity);
         interactionObject._rigidbody.isKinematic = false;
-        interactionObject.transform.parent = null;
-
 
         yield return new WaitForSeconds(cooldown);
 

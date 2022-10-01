@@ -460,7 +460,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8135886326569738820, guid: 57aa1c6ea8690614fa27c96f0c7d4a17, type: 3}
       propertyPath: m_Color.a
-      value: 0.50980395
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8135886326569738820, guid: 57aa1c6ea8690614fa27c96f0c7d4a17, type: 3}
       propertyPath: m_Color.b
@@ -472,6 +472,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8135886326569738820, guid: 57aa1c6ea8690614fa27c96f0c7d4a17, type: 3}
       propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135886326569738820, guid: 57aa1c6ea8690614fa27c96f0c7d4a17, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8135886326569738822, guid: 57aa1c6ea8690614fa27c96f0c7d4a17, type: 3}
@@ -3177,7 +3181,7 @@ MonoBehaviour:
   LayerWeight: 0
   throwVelocity: 10
   dropVelocity: 1
-  _animationCooldown: 0.3
+  _animationCooldown: 0.5
 --- !u!114 &685622107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4147,8 +4151,8 @@ MonoBehaviour:
   closedButton: {fileID: 236542433}
   playerMovement: {fileID: 685622106}
   lightImage:
-  - {fileID: 426462129}
   - {fileID: 914635951}
+  - {fileID: 426462129}
   joystickToggle: {fileID: 1953013093}
   joysticks:
   - {fileID: 660903146}
