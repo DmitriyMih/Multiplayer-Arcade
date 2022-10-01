@@ -3212,7 +3212,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!95 &685622110
 Animator:
   serializedVersion: 3
@@ -4478,7 +4478,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 938d2487747d0fd418676a87dcae0684, type: 2}
+  - {fileID: 2100000, guid: 53bcabac706b2dc4b8446c13a388a373, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

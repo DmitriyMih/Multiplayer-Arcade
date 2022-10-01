@@ -53,6 +53,9 @@ public class PlayerMovement : MonoBehaviour
         HandleGravity();
         Movement();
         Rotate();
+
+        if (transform.position.y <= -50f)
+            transform.position = new Vector3(0, 10, 0);
     }
 
 
