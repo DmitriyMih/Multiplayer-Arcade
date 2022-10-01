@@ -2512,6 +2512,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &586946109 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8135886326569738823, guid: 57aa1c6ea8690614fa27c96f0c7d4a17, type: 3}
+  m_PrefabInstance: {fileID: 166069851}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0d0e7a039f526499c356a3c5cd6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &588428875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4131,7 +4142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31710b8077be91f439efea368ecf2f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joysticksGroup: {fileID: 1021406207}
   content: {fileID: 482282100}
   interactButton: {fileID: 1828550475}
   closedButton: {fileID: 236542433}
@@ -4140,6 +4150,9 @@ MonoBehaviour:
   - {fileID: 426462129}
   - {fileID: 914635951}
   joystickToggle: {fileID: 1953013093}
+  joysticks:
+  - {fileID: 660903146}
+  - {fileID: 586946109}
 --- !u!1 &1021406207
 GameObject:
   m_ObjectHideFlags: 0
