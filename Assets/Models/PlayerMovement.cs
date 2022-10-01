@@ -131,17 +131,19 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         //Cary = false;
-        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, 0.75f, false));
+        StartCoroutine(ThrowObject(_interactionObject, 0, 0.75f, false));
     }
 
     private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown, float cooldown, bool isVelocity)
     {
-        CharacterCooldown = throwCooldownTime;
+        //CharacterCooldown = throwCooldownTime;
         interactionObject.transform.parent = null;
 
         yield return new WaitForSeconds(animationCooldown);
 
-        interactionObject._rigidbody.velocity = transform.forward * throwVelocity;//(isVelocity ? throwVelocity : dropVelocity);
+        float newVelocity = isVelocity ? throwVelocity : dropVelocity;
+        Debug.Log("New Velocity " + newVelocity);
+        interactionObject._rigidbody.velocity = transform.forward * newVelocity;
         interactionObject._rigidbody.isKinematic = false;
 
         yield return new WaitForSeconds(cooldown);
