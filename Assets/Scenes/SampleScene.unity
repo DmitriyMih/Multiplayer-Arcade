@@ -2037,7 +2037,7 @@ MonoBehaviour:
   _joystick: {fileID: 660903146}
   minFallTime: 1.2
   fallCooldownTime: 2
-  throwCooldownTime: 0.5
+  throwCooldownTime: 0.75
   _fallHeight: 1.75
   _fallYCenter: 1
   handPoint: {fileID: 642584689}

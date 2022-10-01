@@ -22,7 +22,7 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetFloat(nameof(_movement.MoveVelocity), _movement.MoveVelocity);
         _animator.SetBool(nameof(_movement.IsFall), _movement.IsFall);
         _animator.SetFloat(nameof(_movement.FallTime), _movement.FallTime);
-        _animator.SetBool(nameof(_movement.Cary), _movement.Cary);
+        _animator.SetBool(nameof(_movement.TakenInHand), _movement.TakenInHand);
 
         //float targetLayer = _animator.GetLayerWeight(1);
         //if (_movement.LayerWeight != targetLayer)

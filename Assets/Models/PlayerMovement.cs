@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsMove { get; private set; }
     public bool IsFall { get; private set; }
-    public bool Cary { get; private set; }
+    //public bool Cary { get; private set; }
 
     public bool TakenInHand => handPoint.childCount > 0;
     public float FallTime { get; private set; }
@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
         if (CharacterCooldown > 0)
         {
             _characterController.SimpleMove(Vector3.zero);
-           CharacterCooldown -= Time.deltaTime;
+            CharacterCooldown -= Time.deltaTime;
             return;
         }
 
@@ -95,56 +95,61 @@ public class PlayerMovement : MonoBehaviour
     [ContextMenu("Take")]
     private void Take(BaseInteractionObject takeObject)
     {
-        if (_interactionObject != null)
+        if (_interactionObject != null || TakenInHand == true || takeObject == null)
             return;
 
-        Cary = true;
+        //Cary = true;
         takeObject.TakeObject(handPoint);
 
         takeObject.transform.parent = handPoint.transform;
-        
-        takeObject.transform.DORotate(Vector3.zero, 0.5f);
+
+        takeObject.transform.DORotate(Vector3.zero, 0.6f);
         takeObject.transform.DOLocalMove(Vector3.zero, 0.5f);
     }
 
     [SerializeField] private float throwVelocity = 15f;
     [SerializeField] private float dropVelocity = 4f;
     [SerializeField] private float _animationCooldown = 0.2f;
-    
+
     [ContextMenu("Drop")]
     public void Throw()
     {
-        if (_interactionObject == null)
+        if (_interactionObject == null || TakenInHand == false)
             return;
 
-        Cary = false;
-        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown,0.75f, true));
+        //Cary = false;
+        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, 0.75f, true));
     }
 
     private void Drop()
     {
-        if (_interactionObject == null)
+        if (_interactionObject == null || TakenInHand == false)
             return;
 
-        Cary = false;
+        //Cary = false;
         StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, 0.75f, false));
     }
 
-    private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown ,float cooldown, bool isVelocity)
+    private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown, float cooldown, bool isVelocity)
     {
         CharacterCooldown = throwCooldownTime;
 
-        _interactionObject = null;
         yield return new WaitForSeconds(animationCooldown);
 
         interactionObject._rigidbody.velocity = transform.forward * throwVelocity;//(isVelocity ? throwVelocity : dropVelocity);
         interactionObject._rigidbody.isKinematic = false;
         interactionObject.transform.parent = null;
 
-        
+
         yield return new WaitForSeconds(cooldown);
 
         interactionObject.DropObject();
+
+        //if (TakenInHand == false)
+        //    _interactionObject = null;
+        //else
+        _interactionObject = handPoint.GetComponentInChildren<BaseInteractionObject>();
+        Take(_interactionObject);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -164,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 IsFall = false;
                 DOTween.To(x => _characterController.height = x, _characterController.height, _normalHeight, 0.2f);
-                DOTween.To(x => _characterController.center = new Vector3(0, x, 0), _characterController.center.y, _normalYCenter, 0.2f).OnComplete(()=>
+                DOTween.To(x => _characterController.center = new Vector3(0, x, 0), _characterController.center.y, _normalYCenter, 0.2f).OnComplete(() =>
                 {
                     moveDir.y = 2;
                 });
