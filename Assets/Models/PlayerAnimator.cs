@@ -16,18 +16,20 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Update()
     {
-        if (_movement != null)
-        {
-            _animator.SetFloat("Movement", _movement.MoveVelocity);
+        if (_movement == null)
+            return;
 
-            float targetLayer = _animator.GetLayerWeight(1);
-            if (_movement.LayerWeight != targetLayer)
-            {
-                DOTween.To(() => targetLayer, x => targetLayer = x, _movement.LayerWeight, Random.Range(0.25f, 0.375f)).OnUpdate(() =>
-                {
-                    _animator.SetLayerWeight(1, targetLayer);
-                });
-            }
-        }
+        _animator.SetFloat(nameof(_movement.MoveVelocity), _movement.MoveVelocity);
+        _animator.SetBool(nameof(_movement.IsFall), _movement.IsFall);
+        _animator.SetFloat(nameof(_movement.FallTime), _movement.FallTime);
+
+        //float targetLayer = _animator.GetLayerWeight(1);
+        //if (_movement.LayerWeight != targetLayer)
+        //{
+        //    DOTween.To(() => targetLayer, x => targetLayer = x, _movement.LayerWeight, Random.Range(0.25f, 0.375f)).OnUpdate(() =>
+        //    {
+        //        _animator.SetLayerWeight(1, targetLayer);
+        //    });
+        //}
     }
 }
