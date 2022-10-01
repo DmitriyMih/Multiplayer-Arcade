@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSettings : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private GameObject content;
+
+    private PlayerMovement playerMovement;
+
+    private List<Joystick> joysticks = new List<Joystick>();
+
+    private void Initialization()
     {
-        
+        joysticks.AddRange(content.GetComponentsInChildren<Joystick>());
+        if(playerMovement!=null)
+            playerMovement.joys
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    public void OpenPanel()
     {
-        
+        content.SetActive(true);
+    }
+
+    public void ClosedPanel()
+    {
+        content.SetActive(false);
     }
 }

@@ -30,7 +30,7 @@ public class BaseInteractionObject : MonoBehaviour
 
     public virtual void DropObject(/*Transform target*/)
     {
-        Debug.Log("Drop");
+        //Debug.Log("Drop");
         _collider.enabled = true;    
         _rigidbody.isKinematic = false;
 
