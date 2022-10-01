@@ -59,13 +59,13 @@ public class GameSettings : MonoBehaviour
         int id;
         switch (togglState)
         {
-            case true:
+            case false:
                 id = 0;
                 joysticks[0].gameObject.SetActive(true);
                 joysticks[1].gameObject.SetActive(false);
                 break;
 
-            case false:
+            case true:
                 id = 1;
                 joysticks[0].gameObject.SetActive(false);
                 joysticks[1].gameObject.SetActive(true);

@@ -1796,7 +1796,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce446f1c04b88b84191f4902d451d5ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shakeDetectionThreshold: 3
+  playerMovement: {fileID: 685622106}
+  _shakeDetectionThreshold: 1.5
   _minShakeInterval: 3
   debugImage: {fileID: 384857029}
 --- !u!1001 &414220083
@@ -6090,8 +6091,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1465611933}
   m_LocalRotation: {x: 0.27059793, y: 0.65328157, z: 0.27059788, w: 0.65328157}
-  m_LocalPosition: {x: 4.4382534, y: 2.6650581, z: -0.091383934}
-  m_LocalScale: {x: 0.5, y: 8, z: 1}
+  m_LocalPosition: {x: 5.1882534, y: 2.6650581, z: -0.09138399}
+  m_LocalScale: {x: 0.5, y: 8, z: 2}
   m_Children: []
   m_Father: {fileID: 1235633802}
   m_RootOrder: 23

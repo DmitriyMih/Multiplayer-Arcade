@@ -22,7 +22,7 @@ public class ShakeDetector : MonoBehaviour
 
     private void Update()
     {
-        if (playerMovement.ButtonInteractable == true)
+        if (playerMovement.ButtonInteractable == true || playerMovement == null)
             return;
 
         _sqrtShakeDetectionThreshold = Mathf.Pow(_shakeDetectionThreshold, 2);
