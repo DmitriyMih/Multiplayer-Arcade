@@ -1423,9 +1423,9 @@ MonoBehaviour:
   _speed: 5
   _rotationPerFrame: 10
   _joystick: {fileID: 660903146}
-  minFallTime: 1.2
+  minFallTime: 0.9
   fallCooldownTime: 2
-  _fallHeight: 1.5
+  _fallHeight: 1.75
   _fallYCenter: 1
   LayerWeight: 0
 --- !u!114 &685622107

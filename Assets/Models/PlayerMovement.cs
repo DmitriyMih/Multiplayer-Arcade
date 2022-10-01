@@ -56,7 +56,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (MovementCooldown > 0)
         {
-            MovementCooldown -= Time.deltaTime;
+            _characterController.SimpleMove(Vector3.zero);
+           MovementCooldown -= Time.deltaTime;
             return;
         }
 
