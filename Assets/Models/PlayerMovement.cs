@@ -117,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
         if (_interactionObject == null || TakenInHand == false)
             return;
 
+        Debug.Log("Throw");
         //Cary = false;
         StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, 0.75f, true));
     }
@@ -154,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out BaseInteractionObject interactionObject) && CharacterCooldown <= 0)
+        if (other.TryGetComponent(out BaseInteractionObject interactionObject) && CharacterCooldown <= 0 && TakenInHand == false)
         {
             Take(interactionObject);
             _interactionObject = interactionObject;

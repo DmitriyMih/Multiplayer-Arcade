@@ -17,7 +17,7 @@ public class BaseInteractionObject : MonoBehaviour
     private void Awake()
     {
         _collider.enabled = true;
-        _rigidbody.isKinematic = true;
+        _rigidbody.isKinematic = false;
     }
 
     public virtual void TakeObject(Transform hand)
