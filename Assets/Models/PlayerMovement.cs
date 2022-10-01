@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float minFallTime = 0.5f;
     [SerializeField] private float fallCooldownTime = 1f;
+    [SerializeField] private float throwCooldownTime = 0.4f;
 
     [Header("Fall Debug")]
     private float _normalHeight;
@@ -22,13 +23,20 @@ public class PlayerMovement : MonoBehaviour
     private float _normalYCenter;
     [SerializeField] private float _fallYCenter;
 
+    [Header("Inventory")]
+    [SerializeField] private Transform handPoint;
+    [SerializeField] private BaseInteractionObject _interactionObject;
+
     public float MoveVelocity => _characterController.velocity.sqrMagnitude;
     public float LayerWeight;
 
     public bool IsMove { get; private set; }
     public bool IsFall { get; private set; }
+    public bool Cary { get; private set; }
+
+    public bool TakenInHand => handPoint.childCount > 0;
     public float FallTime { get; private set; }
-    public float MovementCooldown { get; private set; }
+    public float CharacterCooldown { get; private set; }
 
     private void Awake()
     {
@@ -54,10 +62,10 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (MovementCooldown > 0)
+        if (CharacterCooldown > 0)
         {
             _characterController.SimpleMove(Vector3.zero);
-           MovementCooldown -= Time.deltaTime;
+           CharacterCooldown -= Time.deltaTime;
             return;
         }
 
@@ -84,12 +92,74 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    [ContextMenu("Take")]
+    private void Take(BaseInteractionObject takeObject)
+    {
+        if (_interactionObject != null)
+            return;
+
+        Cary = true;
+        takeObject.TakeObject(handPoint);
+
+        takeObject.transform.parent = handPoint.transform;
+        
+        takeObject.transform.DORotate(Vector3.zero, 0.5f);
+        takeObject.transform.DOLocalMove(Vector3.zero, 0.5f);
+    }
+
+    [SerializeField] private float throwVelocity = 15f;
+    [SerializeField] private float dropVelocity = 4f;
+    [SerializeField] private float _animationCooldown = 0.2f;
+    
+    [ContextMenu("Drop")]
+    public void Throw()
+    {
+        if (_interactionObject == null)
+            return;
+
+        Cary = false;
+        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown,0.75f, true));
+    }
+
+    private void Drop()
+    {
+        if (_interactionObject == null)
+            return;
+
+        Cary = false;
+        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, 0.75f, false));
+    }
+
+    private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown ,float cooldown, bool isVelocity)
+    {
+        CharacterCooldown = throwCooldownTime;
+
+        _interactionObject = null;
+        yield return new WaitForSeconds(animationCooldown);
+
+        interactionObject._rigidbody.velocity = transform.forward * throwVelocity;//(isVelocity ? throwVelocity : dropVelocity);
+        interactionObject._rigidbody.isKinematic = false;
+        interactionObject.transform.parent = null;
+
+        
+        yield return new WaitForSeconds(cooldown);
+
+        interactionObject.DropObject();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out BaseInteractionObject interactionObject) && CharacterCooldown <= 0)
+        {
+            Take(interactionObject);
+            _interactionObject = interactionObject;
+        }
+    }
+
     private void HandleGravity()
     {
         if (_characterController.isGrounded)
         {
-            //float groundedGravity = .05f;
-            //moveDir.y = groundedGravity;
             if (IsFall)
             {
                 IsFall = false;
@@ -102,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (FallTime > minFallTime)
             {
-                MovementCooldown = fallCooldownTime;
+                CharacterCooldown = fallCooldownTime;
             }
             FallTime = 0;
         }
@@ -110,6 +180,9 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDir.y = Physics.gravity.y;
             FallTime += Time.deltaTime;
+
+            if (FallTime > minFallTime)
+                Drop();
 
             if (!IsFall)
             {
