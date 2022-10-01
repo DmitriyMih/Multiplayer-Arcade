@@ -8,8 +8,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1, 15f)] private float _speed = 5f;
     [SerializeField, Range(1, 20)] private float _rotationPerFrame = 10f;
 
-    [SerializeField] private Joystick _joystick;
-
     private CharacterController _characterController;
 
     [SerializeField] private float minFallTime = 0.5f;
@@ -27,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform handPoint;
     [SerializeField] private BaseInteractionObject _interactionObject;
 
+    [SerializeField] private ShakeDetector shakeDetector;
+    public bool ButtonInteractable;
+    
+    public Joystick _joystick;
     public float MoveVelocity => _characterController.velocity.sqrMagnitude;
     public float LayerWeight;
 
@@ -51,6 +53,14 @@ public class PlayerMovement : MonoBehaviour
         HandleGravity();
         Movement();
         Rotate();
+    }
+
+    public void SwitchControl(bool isButton)
+    {
+        switch(isButton)
+        {
+
+        }
     }
 
     private Vector3 moveDir;
