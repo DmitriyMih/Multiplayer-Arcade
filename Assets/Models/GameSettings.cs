@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class GameSettings : MonoBehaviour
 {
+    [SerializeField] private GameObject joysticksGroup;
+
     [SerializeField] private GameObject content;
     [SerializeField] private GameObject interactButton;
+
+    [SerializeField] private GameObject closedButton;
 
     [SerializeField] private PlayerMovement playerMovement;
 
@@ -19,12 +23,13 @@ public class GameSettings : MonoBehaviour
     private void Awake()
     {
         content.SetActive(false);
+        closedButton.SetActive(false);
         Initialization();    
     }
 
     private void Initialization()
     {
-        joysticks.AddRange(content.GetComponentsInChildren<Joystick>());
+        joysticks.AddRange(joysticksGroup.GetComponentsInChildren<Joystick>());
         if (playerMovement != null)
             SwitchJoystick(joystickToggle.isOn);
     }
@@ -74,10 +79,12 @@ public class GameSettings : MonoBehaviour
     public void OpenPanel()
     {
         content.SetActive(true);
+        closedButton.SetActive(true);
     }
 
     public void ClosedPanel()
     {
         content.SetActive(false);
+        closedButton.SetActive(false);
     }
 }
