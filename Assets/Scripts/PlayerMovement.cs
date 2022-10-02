@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dropVelocity = 4f;
     [SerializeField] private float _animationCooldown = 0.2f;
 
+    [SerializeField] private float throwDropTime = 0.5f;
+
     public bool ButtonInteractable;
     
     public Joystick _joystick;
@@ -130,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         Debug.Log("Throw");
-        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, 0.75f, true));
+        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, throwDropTime, true));
     }
 
     private void Drop()
@@ -138,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
         if (_interactionObject == null || TakenInHand == false)
             return;
 
-        StartCoroutine(ThrowObject(_interactionObject, 0, 0.75f, false));
+        StartCoroutine(ThrowObject(_interactionObject, 0, throwDropTime, false));
     }
 
     private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown, float cooldown, bool isVelocity)
