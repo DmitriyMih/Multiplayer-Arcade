@@ -14,13 +14,15 @@ public class BaseInteractionObject : MonoBehaviour
     private float _age; 
     private float _gravity = 9.81f;
 
+    public string SendlerID { get; private set; }
+
     private void Awake()
     {
         _collider.enabled = true;
         _rigidbody.isKinematic = false;
     }
 
-    public virtual void TakeObject(Transform hand)
+    public virtual void TakeObject(Transform hand, string sendler)
     {
         _collider.enabled = false;    
         _rigidbody.isKinematic = true;

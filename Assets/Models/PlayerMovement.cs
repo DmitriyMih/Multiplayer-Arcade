@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController _characterController;
 
+    [SerializeField] private PlayerAnimator playerAnimator;
+
     [SerializeField] private float minFallTime = 0.5f;
     [SerializeField] private float fallCooldownTime = 1f;
     [SerializeField] private float throwCooldownTime = 0.4f;
@@ -25,7 +27,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform handPoint;
     [SerializeField] private BaseInteractionObject _interactionObject;
 
-    [SerializeField] private ShakeDetector shakeDetector;
+    [Header("Throw")]
+    [SerializeField] private float throwVelocity = 15f;
+    [SerializeField] private float dropVelocity = 4f;
+    [SerializeField] private float _animationCooldown = 0.2f;
+
     public bool ButtonInteractable;
     
     public Joystick _joystick;
@@ -34,11 +40,14 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsMove { get; private set; }
     public bool IsFall { get; private set; }
-    //public bool Cary { get; private set; }
 
     public bool TakenInHand => handPoint.childCount > 0;
     public float FallTime { get; private set; }
     public float CharacterCooldown { get; private set; }
+
+    [Header("Multi")]
+    [SerializeField] private string _playerID;
+    public string PlayerID => _playerID;
 
     private void Awake()
     {
@@ -104,18 +113,15 @@ public class PlayerMovement : MonoBehaviour
         if (_interactionObject != null || TakenInHand == true || takeObject == null)
             return;
 
-        //Cary = true;
-        takeObject.TakeObject(handPoint);
+        playerAnimator.TakeInHand(true);
+
+        takeObject.TakeObject(handPoint, PlayerID);
 
         takeObject.transform.parent = handPoint.transform;
 
         takeObject.transform.DORotate(Vector3.zero, 0.6f);
         takeObject.transform.DOLocalMove(Vector3.zero, 0.5f);
     }
-
-    [SerializeField] private float throwVelocity = 15f;
-    [SerializeField] private float dropVelocity = 4f;
-    [SerializeField] private float _animationCooldown = 0.2f;
 
     [ContextMenu("Drop")]
     public void Throw()
@@ -124,7 +130,6 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         Debug.Log("Throw");
-        //Cary = false;
         StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, 0.75f, true));
     }
 
@@ -133,18 +138,19 @@ public class PlayerMovement : MonoBehaviour
         if (_interactionObject == null || TakenInHand == false)
             return;
 
-        //Cary = false;
         StartCoroutine(ThrowObject(_interactionObject, 0, 0.75f, false));
     }
 
     private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown, float cooldown, bool isVelocity)
     {
         //CharacterCooldown = throwCooldownTime;
-        interactionObject.transform.parent = null;
+        playerAnimator.TakeInHand(false);
 
         yield return new WaitForSeconds(animationCooldown);
 
+        interactionObject.transform.parent = null;
         float newVelocity = isVelocity ? throwVelocity : dropVelocity;
+
         Debug.Log("New Velocity " + newVelocity);
         interactionObject._rigidbody.velocity = transform.forward * newVelocity;
         interactionObject._rigidbody.isKinematic = false;
@@ -153,9 +159,6 @@ public class PlayerMovement : MonoBehaviour
 
         interactionObject.DropObject();
 
-        //if (TakenInHand == false)
-        //    _interactionObject = null;
-        //else
         _interactionObject = handPoint.GetComponentInChildren<BaseInteractionObject>();
         Take(_interactionObject);
     }

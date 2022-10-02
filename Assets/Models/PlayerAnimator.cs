@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
+
     private Animator _animator;
     [SerializeField] private PlayerMovement _movement;
 
@@ -22,7 +23,6 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetFloat(nameof(_movement.MoveVelocity), _movement.MoveVelocity);
         _animator.SetBool(nameof(_movement.IsFall), _movement.IsFall);
         _animator.SetFloat(nameof(_movement.FallTime), _movement.FallTime);
-        _animator.SetBool(nameof(_movement.TakenInHand), _movement.TakenInHand);
 
         //float targetLayer = _animator.GetLayerWeight(1);
         //if (_movement.LayerWeight != targetLayer)
@@ -32,5 +32,11 @@ public class PlayerAnimator : MonoBehaviour
         //        _animator.SetLayerWeight(1, targetLayer);
         //    });
         //}
+    }
+
+    public void TakeInHand(bool inHand)
+    {
+        _animator.SetBool(nameof(_movement.TakenInHand), inHand);        
+        //_animator.SetBool(nameof(_movement.TakenInHand), _movement.TakenInHand);
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BoxObject : BaseInteractionObject
 {
-    public override void TakeObject(Transform target)
+    public override void TakeObject(Transform target, string sendler)
     {
-        base.TakeObject(target);
+        base.TakeObject(target, sendler);
     }
 
     public override void DropObject(/*Transform target*/)
