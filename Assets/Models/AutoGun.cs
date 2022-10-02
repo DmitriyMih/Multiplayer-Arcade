@@ -6,7 +6,8 @@ using DG.Tweening;
 public class AutoGun : MonoBehaviour
 {
     [SerializeField] private Transform bodyGroup;
-    [SerializeField] private float angleVelocity = 5f;
+    [SerializeField] private float horizontalVelocity = 5f;
+    [SerializeField] private float verticalVelocity = 5f;
 
     [Header("Shoot Settings")]
     [SerializeField] private Transform spawnPoint;
@@ -33,8 +34,10 @@ public class AutoGun : MonoBehaviour
             return;
 
         float horizontal = Input.GetAxis("Horizontal");
-        if (horizontal != 0)
-            RotateBody(horizontal);
+        float vertical = Input.GetAxis("Vertical");
+
+        if (horizontal != 0 || vertical != 0)
+            RotateBody(horizontal, vertical);
 
         if (Input.GetKeyUp(KeyCode.Q))
             InstatiateBox();
@@ -43,10 +46,11 @@ public class AutoGun : MonoBehaviour
             Shoot();
     }
 
-    private void RotateBody(float angle)
+    private void RotateBody(float horizontalAngle, float verticalAngle)
     {
-        Debug.Log(angle);
-        bodyGroup.Rotate(new Vector3(0, angle * angleVelocity, 0));
+        Debug.Log(horizontalAngle);
+
+        bodyGroup.Rotate(new Vector3(0f, horizontalAngle * horizontalVelocity, 0f));
     }
 
     [ContextMenu("Init Box")]
@@ -72,8 +76,9 @@ public class AutoGun : MonoBehaviour
     {
         if (interactionObject == null || !isCharged)
             return;
-        
+
         interactionObject.DropObject();
+        interactionObject.transform.parent = null;
         interactionObject._rigidbody.velocity = muzzlePoint.forward * newVelocity;
 
         isCharged = false;
