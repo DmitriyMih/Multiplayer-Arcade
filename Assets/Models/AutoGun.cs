@@ -33,13 +33,20 @@ public class AutoGun : MonoBehaviour
             return;
 
         float horizontal = Input.GetAxis("Horizontal");
-        if (horizontal > 0)
+        if (horizontal != 0)
             RotateBody(horizontal);
+
+        if (Input.GetKeyUp(KeyCode.Q))
+            InstatiateBox();
+
+        if (Input.GetKeyUp(KeyCode.E))
+            Shoot();
     }
 
     private void RotateBody(float angle)
     {
-        transform.Rotate(new Vector3(0, angle * angleVelocity, 0));
+        Debug.Log(angle);
+        bodyGroup.Rotate(new Vector3(0, angle * angleVelocity, 0));
     }
 
     [ContextMenu("Init Box")]
@@ -49,24 +56,27 @@ public class AutoGun : MonoBehaviour
             return;
 
         BaseInteractionObject box = Instantiate(interactionPrefab, spawnPoint);
+        box.TakeObject(muzzlePoint, SendlerID);
+        
         box.transform.parent = muzzlePoint;
-
         interactionObject = box;
-        interactionObject.TakeObject(muzzlePoint, SendlerID);
 
-        box.transform.DOLocalMove(muzzlePoint.position, 0.2f).OnComplete(() =>
+        box.transform.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() =>
         {
             isCharged = true;
         });
     }
-    
+
     [ContextMenu("Shoot")]
     private void Shoot()
     {
         if (interactionObject == null || !isCharged)
             return;
+        
+        interactionObject.DropObject();
+        interactionObject._rigidbody.velocity = muzzlePoint.forward * newVelocity;
 
-        interactionObject.DropObject(); 
-        interactionObject._rigidbody.velocity = transform.forward * newVelocity;
+        isCharged = false;
+        interactionObject = null;
     }
 }

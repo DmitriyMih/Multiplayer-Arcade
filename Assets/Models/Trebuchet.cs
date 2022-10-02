@@ -20,6 +20,7 @@ public class Trebuchet : MonoBehaviour
     [SerializeField] private float throwVelocity;
 
     [SerializeField] private float throwDropTime = 0.5f;
+    [SerializeField] private Transform throwPoint;
 
     [SerializeField] private BaseInteractionObject baseInteractionObject;
 
@@ -67,7 +68,7 @@ public class Trebuchet : MonoBehaviour
         yield return new WaitForSeconds(animationCooldown);
 
         interactionObject.transform.parent = null;
-        interactionObject._rigidbody.velocity = contentPlace.forward * throwVelocity;
+        interactionObject._rigidbody.velocity = throwPoint.forward * throwVelocity;
 
         interactionObject._rigidbody.isKinematic = false;
 
