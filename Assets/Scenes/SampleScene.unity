@@ -7858,7 +7858,7 @@ MonoBehaviour:
   placeTime: 0.25
   placeRotationTime: 0.3
   throwAnimationCooldown: 0.35
-  throwVelocity: 7
+  throwVelocity: 15
   throwDropTime: 0.3
   throwPoint: {fileID: 456251739}
   baseInteractionObject: {fileID: 0}

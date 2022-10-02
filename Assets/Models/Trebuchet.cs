@@ -24,6 +24,9 @@ public class Trebuchet : MonoBehaviour
 
     [SerializeField] private BaseInteractionObject baseInteractionObject;
 
+    [SerializeField] private float throwCooldown = 0.5f;
+    [SerializeField] private float cooldownTime;
+
     private Animator animator;
     private bool isCharged;
 
@@ -62,11 +65,12 @@ public class Trebuchet : MonoBehaviour
 
     private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown, float cooldown, bool isVelocity)
     {
+        cooldownTime = throwCooldown;
         animator.SetTrigger("ThrowTrigger");
-        baseInteractionObject = null;
 
         yield return new WaitForSeconds(animationCooldown);
 
+        baseInteractionObject = null;
         interactionObject.transform.parent = null;
         interactionObject._rigidbody.velocity = throwPoint.forward * throwVelocity;
 
@@ -76,6 +80,7 @@ public class Trebuchet : MonoBehaviour
 
         Debug.Log("New Velocity " + throwVelocity);
         interactionObject.DropObject();
+        isCharged = false;
 
         //_interactionObject = handPoint.GetComponentInChildren<BaseInteractionObject>();
         //Take(_interactionObject);
@@ -83,6 +88,14 @@ public class Trebuchet : MonoBehaviour
 
     private void Update()
     {
+        if(cooldownTime > 0)
+        {
+            cooldownTime -= Time.deltaTime;
+            return;
+        }
+
+        animator.SetBool(nameof(IsPlace), IsPlace);
+
         if (IsPlace)
             ReloadTrebuchet();
         else
@@ -118,6 +131,8 @@ public class Trebuchet : MonoBehaviour
     private IEnumerator Action(bool isState, float time)
     {
         animator.SetBool(nameof(isCharged), isState);
+        animator.SetBool(nameof(IsPlace), IsPlace);
+
         yield return new WaitForSeconds(time);
 
         isCharged = isState;
