@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dropVelocity = 4f;
     [SerializeField] private float _animationCooldown = 0.2f;
 
-    [SerializeField] private float throwDropTime = 0.5f;
+    [SerializeField] private float throwDropTime = 0.3f;
 
     public bool ButtonInteractable;
     
