@@ -17,16 +17,12 @@ public class AutoGun : MonoBehaviour
     [SerializeField] private BaseInteractionObject interactionObject;
 
     [SerializeField] private float newVelocity = 10f;
+    [SerializeField] private float timeToDrop = 0.3f;
 
     [SerializeField] private bool isCharged;
 
     public bool IsAutomatic = true;
     public string SendlerID = "Gun";
-
-    private void Awake()
-    {
-
-    }
 
     private void Update()
     {
@@ -46,6 +42,14 @@ public class AutoGun : MonoBehaviour
             Shoot();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out BaseInteractionObject interactionObject))
+        {
+            PlaceBox(interactionObject);
+        }
+    }
+
     private void RotateBody(float horizontalAngle, float verticalAngle)
     {
         Debug.Log(horizontalAngle);
@@ -60,12 +64,21 @@ public class AutoGun : MonoBehaviour
             return;
 
         BaseInteractionObject box = Instantiate(interactionPrefab, spawnPoint);
-        box.TakeObject(muzzlePoint, SendlerID);
-        
-        box.transform.parent = muzzlePoint;
-        interactionObject = box;
+        PlaceBox(box);
+    }
 
-        box.transform.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() =>
+    private void PlaceBox(BaseInteractionObject baseInteraction)
+    {
+        if (interactionObject != null || isCharged)
+            return;
+
+        interactionObject = baseInteraction;
+
+        interactionObject.TakeObject(muzzlePoint, SendlerID);
+        interactionObject.transform.parent = muzzlePoint;
+
+        interactionObject.transform.DOLocalRotate(Vector3.zero, 0.3f);
+        interactionObject.transform.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() =>
         {
             isCharged = true;
         });
@@ -77,11 +90,20 @@ public class AutoGun : MonoBehaviour
         if (interactionObject == null || !isCharged)
             return;
 
-        interactionObject.DropObject();
+        StartCoroutine(Throw(timeToDrop));
+    }
+
+    private IEnumerator Throw(float time)
+    {
+        interactionObject._rigidbody.isKinematic = false;
         interactionObject.transform.parent = null;
         interactionObject._rigidbody.velocity = muzzlePoint.forward * newVelocity;
 
         isCharged = false;
+
+        yield return new WaitForSeconds(time);
+        
+        interactionObject.DropObject();
         interactionObject = null;
     }
 }

@@ -36,7 +36,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: IsPlace
+    m_ConditionEvent: isCharged
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3982232471486774848}
@@ -65,9 +65,6 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: IsPlace
-    m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: isCharged
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5854871589133632093}
@@ -196,9 +193,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1015228
+  m_TransitionDuration: 0.14720798
   m_TransitionOffset: 0
-  m_ExitTime: 0.7829947
+  m_ExitTime: 0.78908604
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
