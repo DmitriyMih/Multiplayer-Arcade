@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class AutoGun : MonoBehaviour
+public class DefaultGun : MonoBehaviour
 {
     [SerializeField] private Transform bodyGroup;
     [SerializeField] private float horizontalVelocity = 5f;
-    [SerializeField] private float verticalVelocity = 5f;
 
     [Header("Shoot Settings")]
     [SerializeField] private Transform spawnPoint;
