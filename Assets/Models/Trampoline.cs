@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Trampoline : MonoBehaviour
-{ 
+{
     [SerializeField] private float throwForce = 10f;
     [SerializeField] private float directionForce = 2f;
 
@@ -11,45 +11,36 @@ public class Trampoline : MonoBehaviour
 
     private void ThrowObject(Rigidbody newObject)
     {
-        Debug.Log("Throw");
-        Vector3 vec = new Vector3(throwDirection.x, 1f, throwDirection.y);
-
-        newObject.velocity = transform.up * throwForce;
-        newObject.velocity = vec * directionForce;
+        Debug.Log("Throw" + newObject);
+        newObject.velocity = new Vector3(throwDirection.x * directionForce, throwForce, throwDirection.y * directionForce);
     }
 
     private void ThrowUpCharacter(CharacterController character)
     {
         Debug.Log("Throw Character");
-        Vector3 direct = new Vector3(throwDirection.x * directionForce, throwDirection.y * directionForce, throwDirection.z * throwForce);
+        character.SimpleMove(new Vector3(throwDirection.x * directionForce, throwDirection.y * directionForce, throwDirection.z * throwForce));
+    }
 
-        direct.y = throwForce;
-        character.Move(direct);
+    private void CheckOther(Collider other)
+    {
+        if (other.TryGetComponent(out CharacterController character))
+        {
+            ThrowUpCharacter(character);
+        }
+
+        if (other.TryGetComponent(out Rigidbody newObject))
+        {
+            ThrowObject(newObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Rigidbody newObject))
-        {
-            ThrowObject(newObject);
-        }
-
-        if (other.TryGetComponent(out CharacterController character))
-        {
-            ThrowUpCharacter(character);
-        }
+        CheckOther(other);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent(out Rigidbody newObject))
-        {
-            ThrowObject(newObject);
-        }
-
-        if (other.TryGetComponent(out CharacterController character))
-        {
-            ThrowUpCharacter(character);
-        }
+        CheckOther(other);
     }
 }

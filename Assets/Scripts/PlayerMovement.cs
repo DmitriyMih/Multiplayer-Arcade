@@ -5,10 +5,10 @@ using DG.Tweening;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField, Range(1, 15f)] private float _speed = 5f;
-    [SerializeField, Range(1, 20)] private float _rotationPerFrame = 10f;
+    [SerializeField, Range(1, 15f)] private float speed = 5f;
+    [SerializeField, Range(1, 20)] private float rotationPerFrame = 10f;
 
-    private CharacterController _characterController;
+    private CharacterController characterController;
 
     [SerializeField] private PlayerAnimator playerAnimator;
 
@@ -18,26 +18,26 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Fall Debug")]
     private float _normalHeight;
-    [SerializeField] private float _fallHeight;
+    [SerializeField] private float fallHeight;
 
     private float _normalYCenter;
-    [SerializeField] private float _fallYCenter;
+    [SerializeField] private float fallYCenter;
 
     [Header("Inventory")]
     [SerializeField] private Transform handPoint;
-    [SerializeField] private BaseInteractionObject _interactionObject;
+    [SerializeField] private BaseInteractionObject interactionObject;
 
     [Header("Throw")]
     [SerializeField] private float throwVelocity = 15f;
     [SerializeField] private float dropVelocity = 4f;
-    [SerializeField] private float _animationCooldown = 0.2f;
+    [SerializeField] private float animationCooldown = 0.2f;
 
     [SerializeField] private float throwDropTime = 0.3f;
 
     public bool ButtonInteractable;
     
-    public Joystick _joystick;
-    public float MoveVelocity => _characterController.velocity.sqrMagnitude;
+    public Joystick joystick;
+    public float MoveVelocity => characterController.velocity.sqrMagnitude;
     public float LayerWeight;
 
     public bool IsMove { get; private set; }
@@ -48,15 +48,15 @@ public class PlayerMovement : MonoBehaviour
     public float CharacterCooldown { get; private set; }
 
     [Header("Multi")]
-    [SerializeField] private string _playerID;
-    public string PlayerID => _playerID;
+    [SerializeField] private string playerID;
+    public string PlayerID => playerID;
 
     private void Awake()
     {
-        _characterController = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
 
-        _normalHeight = _characterController.height;
-        _normalYCenter = _characterController.center.y;
+        _normalHeight = characterController.height;
+        _normalYCenter = characterController.center.y;
     }
 
     private void Update()
@@ -66,14 +66,14 @@ public class PlayerMovement : MonoBehaviour
         Rotate();
 
         if (transform.position.y <= -50f)
-            transform.position = new Vector3(0, 10, 0);
+            transform.position = new Vector3(0, 7f, 0);
     }
 
 
     private Vector3 moveDir;
     private void Movement()
     {
-        if (_joystick == null)
+        if (joystick == null)
         {
             Debug.Log("Joystick Is Null");
             return;
@@ -81,20 +81,20 @@ public class PlayerMovement : MonoBehaviour
 
         if (CharacterCooldown > 0)
         {
-            _characterController.SimpleMove(Vector3.zero);
+            characterController.SimpleMove(Vector3.zero);
             CharacterCooldown -= Time.deltaTime;
             return;
         }
 
-        moveDir.Set(_joystick.Horizontal, 0, _joystick.Vertical);
+        moveDir.Set(joystick.Horizontal, 0, joystick.Vertical);
         //float speed = _speed;//_player.Inventory.HasTurret ? _speedWithTurret : _speed;
         //LayerWeight = _player.Inventory.HasTurret ? 1 : 0;
 
         //float animationSpeed = _player.Inventory.HasTurret ? _speedWithTurret * _speedWithTurretCoef : _speed * _speedCoef;
         //_player.PlayerAnimations.AnimationSpeed = animationSpeed;
 
-        _characterController.SimpleMove(moveDir * _speed);
-        IsMove = moveDir.magnitude > 0 && _characterController.isGrounded;
+        characterController.SimpleMove(moveDir * speed);
+        IsMove = moveDir.magnitude > 0 && characterController.isGrounded;
     }
 
     private void Rotate()
@@ -104,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
             Quaternion currentRot = transform.rotation;
             Quaternion targetRot = Quaternion.LookRotation(moveDir);
 
-            transform.rotation = Quaternion.Slerp(currentRot, targetRot, _rotationPerFrame * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(currentRot, targetRot, rotationPerFrame * Time.deltaTime);
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
         }
     }
@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     [ContextMenu("Take")]
     private void Take(BaseInteractionObject takeObject)
     {
-        if (_interactionObject != null || TakenInHand == true || takeObject == null)
+        if (interactionObject != null || TakenInHand == true || takeObject == null)
             return;
 
         playerAnimator.TakeInHand(true);
@@ -128,19 +128,19 @@ public class PlayerMovement : MonoBehaviour
     [ContextMenu("Drop")]
     public void Throw()
     {
-        if (_interactionObject == null || TakenInHand == false)
+        if (interactionObject == null || TakenInHand == false)
             return;
 
         Debug.Log("Throw");
-        StartCoroutine(ThrowObject(_interactionObject, _animationCooldown, throwDropTime, true));
+        StartCoroutine(ThrowObject(interactionObject, animationCooldown, throwDropTime, true));
     }
 
     private void Drop()
     {
-        if (_interactionObject == null || TakenInHand == false)
+        if (interactionObject == null || TakenInHand == false)
             return;
 
-        StartCoroutine(ThrowObject(_interactionObject, 0, throwDropTime, false));
+        StartCoroutine(ThrowObject(interactionObject, 0, throwDropTime, false));
     }
 
     private IEnumerator ThrowObject(BaseInteractionObject interactionObject, float animationCooldown, float cooldown, bool isVelocity)
@@ -161,8 +161,8 @@ public class PlayerMovement : MonoBehaviour
 
         interactionObject.DropObject();
 
-        _interactionObject = handPoint.GetComponentInChildren<BaseInteractionObject>();
-        Take(_interactionObject);
+        this.interactionObject = handPoint.GetComponentInChildren<BaseInteractionObject>();
+        Take(this.interactionObject);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -170,19 +170,19 @@ public class PlayerMovement : MonoBehaviour
         if (other.TryGetComponent(out BaseInteractionObject interactionObject) && CharacterCooldown <= 0 && TakenInHand == false)
         {
             Take(interactionObject);
-            _interactionObject = interactionObject;
+            this.interactionObject = interactionObject;
         }
     }
 
     private void HandleGravity()
     {
-        if (_characterController.isGrounded)
+        if (characterController.isGrounded)
         {
             if (IsFall)
             {
                 IsFall = false;
-                DOTween.To(x => _characterController.height = x, _characterController.height, _normalHeight, 0.2f);
-                DOTween.To(x => _characterController.center = new Vector3(0, x, 0), _characterController.center.y, _normalYCenter, 0.2f).OnComplete(() =>
+                DOTween.To(x => characterController.height = x, characterController.height, _normalHeight, 0.2f);
+                DOTween.To(x => characterController.center = new Vector3(0, x, 0), characterController.center.y, _normalYCenter, 0.2f).OnComplete(() =>
                 {
                     moveDir.y = 2;
                 });
@@ -205,8 +205,8 @@ public class PlayerMovement : MonoBehaviour
             if (!IsFall)
             {
                 IsFall = true;
-                DOTween.To(x => _characterController.height = x, _characterController.height, _fallHeight, 0.2f);
-                DOTween.To(x => _characterController.center = new Vector3(0, x, 0), _characterController.center.y, _fallYCenter, 0.2f);
+                DOTween.To(x => characterController.height = x, characterController.height, fallHeight, 0.2f);
+                DOTween.To(x => characterController.center = new Vector3(0, x, 0), characterController.center.y, fallYCenter, 0.2f);
             }
         }
     }

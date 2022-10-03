@@ -72,7 +72,7 @@ public class GameSettings : MonoBehaviour
                 break;
         }
 
-        playerMovement._joystick = joysticks[id];
+        playerMovement.joystick = joysticks[id];
     }
 
     public void OpenPanel()
