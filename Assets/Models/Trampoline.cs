@@ -21,7 +21,7 @@ public class Trampoline : MonoBehaviour
     private void ThrowUpCharacter(CharacterController character)
     {
         Debug.Log("Throw Character");
-        Vector3 direct = new Vector3(throwDirection.x * throwForce, throwDirection.y * throwForce, throwDirection.z * throwForce);
+        Vector3 direct = new Vector3(throwDirection.x * directionForce, throwDirection.y * directionForce, throwDirection.z * throwForce);
 
         direct.y = throwForce;
         character.Move(direct);
